@@ -8,11 +8,12 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1/students")
+@RequestMapping("api/v1/student")
 public class StudentController {
 
     private final StudentService studentService;
 
+    @Autowired
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
@@ -23,13 +24,20 @@ public class StudentController {
     }
 
     @PostMapping
-    public void addStudent(@RequestBody StudentRequest studentRequest){
-        log.info("new student added {}", studentRequest);
-        studentService.addStudent(studentRequest);
+    public void addStudent(@RequestBody Student student){
+        studentService.addStudent(student);
     }
 
     @DeleteMapping(path="{studentId}")
     public void DeleteStudent(@PathVariable("studentId") Integer id){
         studentService.deleteStudent(id);
+    }
+
+    @PutMapping(path="{studentId}")
+    public void updateStudent(
+            @PathVariable("studentId") Integer studentId,
+            @RequestBody Student student) {
+        studentService.updateStudent(studentId, student.getFirstName(), student.getLastName(), student.getEmail(), student.getGroupId());
+
     }
 }
