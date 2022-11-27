@@ -67,8 +67,8 @@ public class StudentService {
             student.setLastName(lastName);
         }
 
-        if (groupId != null && !Objects.equals(groupId, student.getStudentGroupId())) {
-            student.setStudentGroupId(groupId);
+        if (groupId != null && !Objects.equals(groupId, student.getGroupId())) {
+            student.setGroupId(groupId);
         }
 
         if (matricule != null && !Objects.equals(matricule, student.getMatricule())) {

@@ -64,11 +64,11 @@ public class Student {
         this.matricule = matricule;
     }
 
-    public Integer getStudentGroupId() {
+    public Integer getGroupId() {
         return groupId;
     }
 
-    public void setStudentGroupId(Integer groupId) {
+    public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
 }

@@ -37,7 +37,7 @@ public class StudentController {
     public void updateStudent(
             @PathVariable("studentId") Integer studentId,
             @RequestBody Student student) {
-        studentService.updateStudent(studentId, student.getFirstName(), student.getLastName(), student.getEmail(), student.getMatricule(), student.getStudentGroupId());
+        studentService.updateStudent(studentId, student.getFirstName(), student.getLastName(), student.getEmail(), student.getMatricule(), student.getGroupId());
 
     }
 }
