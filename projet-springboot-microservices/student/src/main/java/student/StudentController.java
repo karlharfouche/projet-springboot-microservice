@@ -2,7 +2,6 @@ package student;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class StudentController {
     public void updateStudent(
             @PathVariable("studentId") Integer studentId,
             @RequestBody Student student) {
-        studentService.updateStudent(studentId, student.getFirstName(), student.getLastName(), student.getEmail(), student.getGroupId());
+        studentService.updateStudent(studentId, student.getFirstName(), student.getLastName(), student.getEmail(), student.getMatricule(), student.getStudentGroupId());
 
     }
 }

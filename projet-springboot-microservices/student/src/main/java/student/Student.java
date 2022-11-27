@@ -5,13 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table
 public class Student {
 
     @Id
@@ -23,19 +22,13 @@ public class Student {
             strategy = GenerationType.SEQUENCE,
             generator = "student_id_sequence"
     )
-    private Integer id;
+    private Integer studentId;
     private String firstName;
     private String lastName;
     private String email;
+    private String matricule;
     private Integer groupId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -61,11 +54,19 @@ public class Student {
         this.email = email;
     }
 
-    public Integer getGroupId() {
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
+
+    public Integer getStudentGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Integer groupId) {
+    public void setStudentGroupId(Integer groupId) {
         this.groupId = groupId;
     }
 }
