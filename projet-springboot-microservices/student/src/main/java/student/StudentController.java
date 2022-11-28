@@ -38,6 +38,16 @@ public class StudentController {
             @PathVariable("studentId") Integer studentId,
             @RequestBody Student student) {
         studentService.updateStudent(studentId, student.getFirstName(), student.getLastName(), student.getEmail(), student.getMatricule(), student.getGroupId());
-
     }
+
+    @GetMapping(path = "/grade/{studentId}")
+    public Double getGrade(@PathVariable("studentId") Integer studentId){
+        return studentService.calculateGrade(studentId);
+    }
+
+    @GetMapping(path = "/group/{groupId}")
+    public List<Student> getStudentsByGroupId(@PathVariable("groupId") Integer groupId){
+        return studentService.getStudentsByGroupId(groupId);
+    }
+
 }

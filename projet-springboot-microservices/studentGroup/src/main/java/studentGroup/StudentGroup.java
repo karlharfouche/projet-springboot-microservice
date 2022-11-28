@@ -18,7 +18,8 @@ public class StudentGroup {
     @Id
     @SequenceGenerator(
             name = "studentGroup_id_sequence",
-            sequenceName = "studentGroup_id_sequence"
+            sequenceName = "studentGroup_id_sequence",
+            allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,

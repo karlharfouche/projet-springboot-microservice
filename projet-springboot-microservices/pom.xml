@@ -12,6 +12,7 @@
     <module>student</module>
     <module>studentGroup</module>
     <module>evaluator</module>
+    <module>evaluation</module>
   </modules>
 
   <name>projet-springboot-microservices</name>

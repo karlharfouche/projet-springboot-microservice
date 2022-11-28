@@ -18,7 +18,8 @@ public class Evaluator {
     @Id
     @SequenceGenerator(
             name = "evaluator_id_sequence",
-            sequenceName = "evaluator_id_sequence"
+            sequenceName = "evaluator_id_sequence",
+            allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,

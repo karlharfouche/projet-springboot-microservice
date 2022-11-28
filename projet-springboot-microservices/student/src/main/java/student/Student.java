@@ -18,7 +18,8 @@ public class Student {
     @Id
     @SequenceGenerator(
             name = "student_id_sequence",
-            sequenceName = "student_id_sequence"
+            sequenceName = "student_id_sequence",
+            allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
@@ -30,7 +31,7 @@ public class Student {
     private String email;
     private String matricule;
     private Integer groupId;
-
+    private Double grade;
 
     public String getFirstName() {
         return firstName;
@@ -70,5 +71,13 @@ public class Student {
 
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
+    }
+
+    public Double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Double grade) {
+        this.grade = grade;
     }
 }
