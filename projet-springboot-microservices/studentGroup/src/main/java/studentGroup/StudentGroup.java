@@ -27,14 +27,4 @@ public class StudentGroup {
     )
     private Integer groupId;
     private String fypTitle;
-
-
-    public String getFypTitle() {
-        return fypTitle;
-    }
-
-    public void setFypTitle(String fypTitle) {
-        this.fypTitle = fypTitle;
-    }
-
 }

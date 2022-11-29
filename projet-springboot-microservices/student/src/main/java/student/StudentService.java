@@ -119,7 +119,8 @@ public class StudentService {
                 tmpGrade /= evaluations.size();
                 grade += tmpGrade * percentages.get(i);
             }
-            if(grade != student.getGrade())  student.setGrade(grade * 5);
+                student.setGrade(grade * 5);
         return student.getGrade();
     }
+
 }
