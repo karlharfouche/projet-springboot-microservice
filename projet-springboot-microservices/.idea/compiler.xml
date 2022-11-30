@@ -11,6 +11,7 @@
         <module name="studentGroup" />
         <module name="demo" />
         <module name="student" />
+        <module name="eureka-server" />
         <module name="evaluator" />
       </profile>
     </annotationProcessing>
