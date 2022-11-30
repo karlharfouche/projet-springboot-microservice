@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class StudentGroupService {
@@ -19,6 +20,10 @@ public class StudentGroupService {
 
     public List<StudentGroup> getStudentGroups(){
         return groupRepository.findAll();
+    }
+
+    public Optional<StudentGroup> getStudentGroupById(Integer groupId){
+        return groupRepository.findById(groupId);
     }
 
     public void addStudentGroup(StudentGroup group){

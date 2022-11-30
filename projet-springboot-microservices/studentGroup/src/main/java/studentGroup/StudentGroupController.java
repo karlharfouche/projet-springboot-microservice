@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -23,6 +24,10 @@ public class StudentGroupController {
         return groupService.getStudentGroups();
     }
 
+    @GetMapping(path="{groupId}")
+    public Optional<StudentGroup> getStudentGroupById(@PathVariable("groupId") Integer id){
+        return groupService.getStudentGroupById(id);
+    }
     @PostMapping
     public void addStudentGroup(@RequestBody StudentGroup group){
         groupService.addStudentGroup(group);

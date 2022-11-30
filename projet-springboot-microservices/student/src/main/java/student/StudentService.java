@@ -1,52 +1,48 @@
 package student;
 
 import evaluation.Evaluation;
-import evaluation.EvaluationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import studentGroup.StudentGroup;
-import studentGroup.StudentGroupRepository;
+
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
-@ComponentScan(basePackages = "studentGroup")
-@ComponentScan(basePackages = "evaluation")
+
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final StudentGroupRepository studentGroupRepository;
-    private final EvaluationRepository evaluationRepository;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository, StudentGroupRepository studentGroupRepository, EvaluationRepository evaluationRepository) {
+    public StudentService(StudentRepository studentRepository, RestTemplate restTemplate) {
         this.studentRepository = studentRepository;
-        this.studentGroupRepository = studentGroupRepository;
-        this.evaluationRepository = evaluationRepository;
+        this.restTemplate = restTemplate;
     }
 
     public List<Student> getStudents(){
         return studentRepository.findAll();
+
     }
 
     public void addStudent(Student student){
         Optional<Student> studentOptional = studentRepository.
                 findStudentByEmail(student.getEmail());
 
-        Optional<StudentGroup> studentGroupOptional = studentGroupRepository.
-                findGroupId(student.getGroupId());
+        StudentGroup studentGroup = restTemplate.getForObject(
+                "http://GROUP/api/v1/group/{groupId}",
+                StudentGroup.class, student.getGroupId()
+        );
 
+        if(studentGroup==null){
+            throw new IllegalStateException("Group with id " + student.getGroupId() + " not found");
+        }
         if(studentOptional.isPresent()) {
             throw new IllegalStateException("email taken");
-        }
-
-        if(!studentGroupOptional.isPresent()) {
-            throw new IllegalStateException("Group id not found");
         }
 
         studentRepository.save(student);
@@ -99,27 +95,33 @@ public class StudentService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalStateException("student with id " + studentId + " does not exists"));
 
-            List<Evaluation> evaluations = evaluationRepository.findByStudentId(studentId);
-            List<Double> percentages = new ArrayList<Double>() {{
-                add(0.1);
-                add(0.15);
-                add(0.1);
-                add(0.1);
-                add(0.2);
-                add(0.1);
-                add(0.1);
-                add(0.15);
-            }};
-            double grade = 0.0;
-            for (int i = 0; i < 8; i++) {
-                double tmpGrade = 0;
-                for (Evaluation evaluation : evaluations) {
-                    tmpGrade += evaluation.getCriterias().get(i);
-                }
-                tmpGrade /= evaluations.size();
-                grade += tmpGrade * percentages.get(i);
+        ResponseEntity<Evaluation[]> responseEvaluations = restTemplate.getForEntity(
+                "http://EVALUATION/api/v1/evaluation/student/{studentId}",
+                Evaluation[].class, student.getStudentId()
+        );
+        Evaluation[] evaluations = responseEvaluations.getBody();
+        List<Double> percentages = new ArrayList<Double>() {{
+            add(0.1);
+            add(0.15);
+            add(0.1);
+            add(0.1);
+            add(0.2);
+            add(0.1);
+            add(0.1);
+            add(0.15);
+        }};
+        double grade = 0.0;
+        for (int i = 0; i < 8; i++) {
+            double tmpGrade = 0;
+            assert evaluations != null;
+            for (Evaluation evaluation : evaluations) {
+                System.out.println(evaluation);
+                tmpGrade += evaluation.getCriterias().get(i);
             }
-                student.setGrade(grade * 5);
+            tmpGrade /= evaluations.length;
+            grade += tmpGrade * percentages.get(i);
+        }
+            student.setGrade(grade * 5);
         return student.getGrade();
     }
 
