@@ -16,12 +16,12 @@ import java.util.*;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final RestTemplate restTemplate;
+    private final StudentConfig studentConfig;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository, RestTemplate restTemplate) {
+    public StudentService(StudentRepository studentRepository, StudentConfig studentConfig) {
         this.studentRepository = studentRepository;
-        this.restTemplate = restTemplate;
+        this.studentConfig = studentConfig;
     }
 
     public List<Student> getStudents(){
@@ -33,7 +33,7 @@ public class StudentService {
         Optional<Student> studentOptional = studentRepository.
                 findStudentByEmail(student.getEmail());
 
-        StudentGroup studentGroup = restTemplate.getForObject(
+        StudentGroup studentGroup = studentConfig.restTemplate().getForObject(
                 "http://GROUP/api/v1/group/{groupId}",
                 StudentGroup.class, student.getGroupId()
         );
@@ -95,7 +95,7 @@ public class StudentService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalStateException("student with id " + studentId + " does not exists"));
 
-        ResponseEntity<Evaluation[]> responseEvaluations = restTemplate.getForEntity(
+        ResponseEntity<Evaluation[]> responseEvaluations = studentConfig.restTemplate().getForEntity(
                 "http://EVALUATION/api/v1/evaluation/student/{studentId}",
                 Evaluation[].class, student.getStudentId()
         );
